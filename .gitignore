@@ -1,0 +1,19 @@
+# macOS
+.DS_Store
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Helm / Kubernetes sensitive files
+**/secret-values.yaml
+
+# Optional: ignore all secret files pattern
+**/*secret*.yaml
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
