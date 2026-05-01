@@ -1,0 +1,66 @@
+apiVersion: skaffold/v4beta11
+kind: Config
+
+# ---------------------------------------------------------------------------
+# BUILD
+# Skaffold builds each image locally into Minikube's Docker daemon directly.
+# push: false means images stay local — no registry needed.
+# pullPolicy: Never in each chart ensures Kubernetes never tries to pull them.
+# ---------------------------------------------------------------------------
+build:
+  local:
+    push: false
+    useDockerCLI: true   # required so Skaffold can target Minikube's Docker daemon
+  artifacts:
+    - image: api-gateway
+      context: ../api-gateway
+      docker:
+        dockerfile: Dockerfile
+    - image: notes-service
+      context: ../notes-service
+      docker:
+        dockerfile: Dockerfile
+    - image: notes-web
+      context: ../notes-web
+      docker:
+        dockerfile: Dockerfile
+
+# ---------------------------------------------------------------------------
+# DEPLOY
+# Skaffold renders each Helm chart and applies it to the Minikube cluster.
+# setValueTemplates injects the Skaffold-managed image tag into the chart,
+# overriding the static "local" tag in values.yaml.
+# ---------------------------------------------------------------------------
+deploy:
+  helm:
+    releases:
+      - name: api-gateway
+        chartPath: helm-api-gateway
+        valuesFiles:
+          - helm-api-gateway/values.yaml
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_api_gateway}}"
+          image.tag: "{{.IMAGE_TAG_api_gateway}}"
+        setValues:
+          image.pullPolicy: Never
+
+      - name: notes-service
+        chartPath: helm-notes-service
+        valuesFiles:
+          - helm-notes-service/values.yaml
+          - helm-notes-service/secret-values.yaml   # gitignored — contains POSTGRES_URI
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_notes_service}}"
+          image.tag: "{{.IMAGE_TAG_notes_service}}"
+        setValues:
+          image.pullPolicy: Never
+
+      - name: notes-web
+        chartPath: helm-notes-web
+        valuesFiles:
+          - helm-notes-web/values.yaml
+        setValueTemplates:
+          image.repository: "{{.IMAGE_REPO_notes_web}}"
+          image.tag: "{{.IMAGE_TAG_notes_web}}"
+        setValues:
+          image.pullPolicy: Never
