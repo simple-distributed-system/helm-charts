@@ -35,6 +35,7 @@ deploy:
   helm:
     releases:
       - name: api-gateway
+        namespace: notes-prod
         chartPath: helm-api-gateway
         valuesFiles:
           - helm-api-gateway/values.yaml
@@ -45,6 +46,7 @@ deploy:
           image.pullPolicy: Never
 
       - name: notes-service
+        namespace: notes-prod
         chartPath: helm-notes-service
         valuesFiles:
           - helm-notes-service/values.yaml
@@ -56,6 +58,7 @@ deploy:
           image.pullPolicy: Never
 
       - name: notes-web
+        namespace: notes-prod
         chartPath: helm-notes-web
         valuesFiles:
           - helm-notes-web/values.yaml
