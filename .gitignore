@@ -7,8 +7,6 @@
 
 **/secret-values.yaml
 
-**/*secret*.yaml
-
 # Logs
 *.log
 
