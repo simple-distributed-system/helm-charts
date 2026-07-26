@@ -5,7 +5,8 @@ image:
   pullPolicy: Never
   tag: "local"
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: ghcr-secret
 nameOverride: ""
 fullnameOverride: ""
 
@@ -27,13 +28,13 @@ service:
   port: 80
   name: notes-web
 
-# Ingress is enabled — this is the public entry point via nginx-ingress + Cloudflare Tunnel
+# Ingress is enabled — public entry point via k3s's built-in Traefik controller
 ingress:
   enabled: true
-  className: nginx
+  className: traefik
   annotations: {}
   hosts:
-    - host: notes.example.com
+    - host: ""
       paths:
         - path: /
           pathType: Prefix

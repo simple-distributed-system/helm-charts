@@ -5,7 +5,8 @@ image:
   pullPolicy: Never
   tag: "local"
 
-imagePullSecrets: []
+imagePullSecrets:
+  - name: ghcr-secret
 nameOverride: ""
 fullnameOverride: ""
 

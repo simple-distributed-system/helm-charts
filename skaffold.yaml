@@ -3,14 +3,13 @@ kind: Config
 
 # ---------------------------------------------------------------------------
 # BUILD
-# Skaffold builds each image locally into Minikube's Docker daemon directly.
-# push: false means images stay local — no registry needed.
-# pullPolicy: Never in each chart ensures Kubernetes never tries to pull them.
+# Images are pushed to ghcr.io, then pulled by the real k3s cluster's nodes
+# (authenticated via the ghcr-secret imagePullSecret in the notes namespace).
 # ---------------------------------------------------------------------------
 build:
   local:
-    push: false
-    useDockerCLI: true   # required so Skaffold can target Minikube's Docker daemon
+    push: true
+    useDockerCLI: true
   artifacts:
     - image: api-gateway
       context: ../api-gateway
@@ -27,7 +26,8 @@ build:
 
 # ---------------------------------------------------------------------------
 # DEPLOY
-# Skaffold renders each Helm chart and applies it to the Minikube cluster.
+# Skaffold renders each Helm chart and applies it to whatever cluster your
+# current kubectl context points at (k3s-lab).
 # setValueTemplates injects the Skaffold-managed image tag into the chart,
 # overriding the static "local" tag in values.yaml.
 # ---------------------------------------------------------------------------
@@ -43,7 +43,7 @@ deploy:
           image.repository: "{{.IMAGE_REPO_api_gateway}}"
           image.tag: "{{.IMAGE_TAG_api_gateway}}"
         setValues:
-          image.pullPolicy: Never
+          image.pullPolicy: IfNotPresent
 
       - name: notes-service
         namespace: notes
@@ -55,7 +55,7 @@ deploy:
           image.repository: "{{.IMAGE_REPO_notes_service}}"
           image.tag: "{{.IMAGE_TAG_notes_service}}"
         setValues:
-          image.pullPolicy: Never
+          image.pullPolicy: IfNotPresent
 
       - name: notes-web
         namespace: notes
@@ -66,4 +66,4 @@ deploy:
           image.repository: "{{.IMAGE_REPO_notes_web}}"
           image.tag: "{{.IMAGE_TAG_notes_web}}"
         setValues:
-          image.pullPolicy: Never
+          image.pullPolicy: IfNotPresent
