@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: notes-web
-  pullPolicy: Never
-  tag: "local"
+  repository: ghcr.io/sarka99/notes-web
+  pullPolicy: IfNotPresent
+  tag: "812e4fd"
 
 imagePullSecrets:
   - name: ghcr-secret
