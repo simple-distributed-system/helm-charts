@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: api-gateway
-  pullPolicy: Never
-  tag: "local"
+  repository: ghcr.io/sarka99/api-gateway
+  pullPolicy: IfNotPresent
+  tag: "ded297f-dirty"
 
 imagePullSecrets:
   - name: ghcr-secret
