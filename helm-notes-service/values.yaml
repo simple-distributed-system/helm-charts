@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: notes-service
-  pullPolicy: Never
-  tag: "local"
+  repository: ghcr.io/sarka99/notes-service
+  pullPolicy: IfNotPresent
+  tag: "9c566a8-dirty"
 
 imagePullSecrets:
   - name: ghcr-secret
