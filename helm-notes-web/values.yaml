@@ -28,18 +28,6 @@ service:
   port: 80
   name: notes-web
 
-# Ingress is enabled — public entry point via k3s's built-in Traefik controller
-ingress:
-  enabled: true
-  className: traefik
-  annotations: {}
-  hosts:
-    - host: ""
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-
 resources: {}
 
 readinessProbe:
