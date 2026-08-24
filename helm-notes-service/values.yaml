@@ -49,6 +49,13 @@ readinessProbe:
   initialDelaySeconds: 15
   periodSeconds: 5
 
+startupProbe:
+  httpGet:
+    path: /manage/health/liveness
+    port: 8080
+  failureThreshold: 30
+  periodSeconds: 5
+
 livenessProbe:
   httpGet:
     path: /manage/health/liveness
@@ -70,5 +77,5 @@ affinity: {}
 
 # Non-secret environment variables injected into the container
 env:
-  SPRING_PROFILES_ACTIVE: prod
+  SPRING_PROFILES_ACTIVE: test
   KAFKA_BOOTSTRAP_SERVERS: kafka:9092

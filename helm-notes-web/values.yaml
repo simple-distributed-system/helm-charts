@@ -37,6 +37,13 @@ readinessProbe:
   initialDelaySeconds: 5
   periodSeconds: 5
 
+startupProbe:
+  httpGet:
+    path: /
+    port: 80
+  failureThreshold: 12
+  periodSeconds: 5
+
 livenessProbe:
   httpGet:
     path: /

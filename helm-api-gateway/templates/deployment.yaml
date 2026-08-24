@@ -43,6 +43,8 @@ spec:
           env:
             - name: NOTES_SERVICE_URI
               value: {{ .Values.notesServiceUri | quote }}
+          startupProbe:
+            {{- toYaml .Values.startupProbe | nindent 12 }}
           livenessProbe:
             {{- toYaml .Values.livenessProbe | nindent 12 }}
           readinessProbe:
