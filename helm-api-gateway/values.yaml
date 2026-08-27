@@ -57,6 +57,7 @@ startupProbe:
     path: /manage/health/liveness
     port: 8080
   failureThreshold: 30
+  initDelaySeconds: 30
   periodSeconds: 5
 
 livenessProbe:
