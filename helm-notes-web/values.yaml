@@ -28,7 +28,13 @@ service:
   port: 80
   name: notes-web
 
-resources: {}
+resources:
+  requests:
+    memory: 64Mi
+    cpu: 20m
+  limits:
+    memory: 128Mi
+    cpu: 200m
 
 readinessProbe:
   httpGet:
